@@ -3,6 +3,8 @@ import Footer from './components/layout/Footer';
 import Navbar from './components/layout/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
+import Recipe from './pages/Recipe';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/about' element={<About/>}/>
+            <Route path='/recipe/:name' element={<Recipe/>}/>
+            <Route path='/*' element={<NotFound/>}/>
           </Routes>
         </main>
         <Footer/>
