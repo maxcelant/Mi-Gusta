@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily:{
         'jost': ['Jost']
-      }
+      },
     },
   },
   plugins: [require("daisyui")],
