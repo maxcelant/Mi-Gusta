@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily:{
-        'jost': ['Jost']
+        'jost': ['Jost'],
+        'poppins':['Poppins']
       },
     },
   },

@@ -31,6 +31,7 @@ function SignIn() {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password);
       if(userCredential.user){
+        toast.success('Logged In Successfully')
         navigate('/');
       }
     } catch (e) {

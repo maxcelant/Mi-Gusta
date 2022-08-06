@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState, useEffect, Fragment} from 'react'
 import Navbar from './components/layout/Navbar';
 import Home from './pages/Home';
+import Account from './pages/Account';
 import About from './pages/About';
 import Recipe from './pages/Recipe';
 import NotFound from './pages/NotFound';
@@ -21,7 +22,7 @@ function App() {
     <BrowserRouter>
       <div className={'flex flex-col h-screen'}>
       <TopBar/>
-      <main className='container mx-auto px-3 pb-12 mt-10'>
+      <main className='container mx-auto px-3 pb-12 mt-20'>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/about' element={<About/>}/>
@@ -30,7 +31,8 @@ function App() {
         <Route path='/profile' element={<PrivateRoute/>}>
           <Route path='/profile' element={<Profile/>}/>
         </Route>
-        <Route path='/recipe/:id' element={<Recipe/>}/>
+        <Route path='/account/:userId' element={<Account/>}/>
+        <Route path='/recipe/:userId/:recipeId' element={<Recipe/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/search' element={<Search/>}/>
         <Route path='/*' element={<NotFound/>}/>
