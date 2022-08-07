@@ -15,8 +15,8 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
                     <div className='badge'>{author}</div>
                     <p>{teaser}</p>
                     <div class="card-actions justify-end">
-                        { tags.map((tag) => (
-                            <span class="badge badge-outline">#{tag}</span>
+                        { tags.map((tag, index) => (
+                            <span key={index} class="badge badge-outline">#{tag}</span>
                         ))}
                     </div>
                     </div>

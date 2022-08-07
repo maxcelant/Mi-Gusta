@@ -79,9 +79,10 @@ function Account() {
             <img src={user.avatar} alt={user.name}/>
             </div>
         </div>
-        <div  className='flex justify-start font-bold text-md ml-3'>{user.name}</div>
+        <div className='flex justify-start font-bold text-md ml-3'>{user.name}</div>
         </div>
-        <hr/>
+        <div className='font-thin text-sm md:text-md lg:text-md xl:text-lg italic'>{user.bio}</div>
+        <div className='border-t border-gray-300 my-4'/>
         <div className='font-jost text-2xl font-semibold mb-2'>Posts</div>
         <div className='container mx-auto'>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1'>

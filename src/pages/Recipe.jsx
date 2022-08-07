@@ -140,9 +140,9 @@ function Recipe() {
 
       <hr/>
       <div className='text-2xl font-semibold mt-4'>Ingredients</div>
-      {recipe.ingredients.map((ingredient) => (
-          <li className='text-sm md:text-md lg:text-lg xl:text-lg font-semibold m-2'>
-            <span className='bg-white p-0.5 px-2 rounded-lg'>{ingredient}</span>
+      {recipe.ingredients.map((ingredient, index) => (
+          <li key={index} className='text-sm md:text-md lg:text-lg xl:text-lg font-semibold m-2'>
+            <span  className='bg-white p-0.5 px-2 rounded-lg'>{ingredient}</span>
           </li>
       ))}
     </div>
