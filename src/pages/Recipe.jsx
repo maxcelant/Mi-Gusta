@@ -16,6 +16,7 @@ function Recipe() {
 
   const [ recipe, setRecipe ] = useState(null)
   const [ user, setUser ] = useState(null)
+  const [ currentUser, setCurrentUser ] = useState(null)
   const [ loading, setLoading ] = useState(true)
   const [ numberOfTiles, setNumberOfTiles ] = useState(1)
 
@@ -40,7 +41,6 @@ function Recipe() {
         if(docSnap.exists()){
           console.log(docSnap.data())
           setRecipe(docSnap.data())
-          setLoading(false)
         }
       } catch (e) {
         toast.error('Could not fetch recipe')
@@ -59,6 +59,8 @@ function Recipe() {
         toast.error('Could not fetch recipe')
       }
     }
+
+    setCurrentUser(auth.currentUser) // so we can see if the current user is the author of this post
 
     fetchRecipe()
     fetchUser()
@@ -95,13 +97,23 @@ function Recipe() {
   return (
     <div className='mb-16'>
       <div className='container mx-auto flex justify-start items-center mb-3'>
-      <Link to={`/account/${params.userId}`}>
-        <div class="avatar">
-          <div  class="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <img src={user.avatar} alt={recipe.author}/>
+      {currentUser ?
+        (<Link to={(auth.currentUser.uid === params.userId) ? '/profile' : `/account/${params.userId}`}>
+          <div class="avatar">
+            <div  class="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img src={user.avatar} alt={recipe.author}/>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>) :
+        (<Link to={`/account/${params.userId}`}>
+          <div class="avatar">
+            <div  class="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img src={user.avatar} alt={recipe.author}/>
+            </div>
+          </div>
+        </Link>)
+      }
+
       <div  className='flex justify-start font-bold text-md ml-3'>{recipe.author}</div>
       </div>
       <div className='text-2xl xl:text-3xl lg:text-3xl font-bold font-poppins'>{recipe.name}</div>

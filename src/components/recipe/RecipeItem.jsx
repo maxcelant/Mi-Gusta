@@ -8,7 +8,7 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
     return (
         <AnimationWrapper>
             <Link to={`/recipe/${userRef}/${id}`}> {/* sends user to individual recipe page */}
-                <div className="card bg-base-100 shadow-xl min-h-full">
+                <div className="card bg-base-100 shadow-xl">
                     <figure className="object-fill"><img className="object-fill" src={imageUrls[0]} alt={name} /></figure>
                     <div class="card-body">
                     <h2 class="card-title">{name}</h2>
