@@ -12,6 +12,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
+import CreateRecipe from './pages/CreateRecipe';
 import PrivateRoute from './components/PrivateRoute';
 import TopBar from './components/layout/TopBar';
 
@@ -30,6 +31,9 @@ function App() {
         <Route path='/signin' element={<SignIn/>}/>
         <Route path='/profile' element={<PrivateRoute/>}>
           <Route path='/profile' element={<Profile/>}/>
+        </Route>
+        <Route path='/create-recipe' element={<PrivateRoute/>}>
+          <Route path='/create-recipe' element={<CreateRecipe/>}/>
         </Route>
         <Route path='/account/:userId' element={<Account/>}/>
         <Route path='/recipe/:userId/:recipeId' element={<Recipe/>}/>

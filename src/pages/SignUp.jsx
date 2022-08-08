@@ -37,7 +37,11 @@ function SignUp() {
       updateProfile(auth.currentUser, {
         displayName: userData.name
       })
-      const userDataCopy = {...userData}
+      const userDataCopy = {
+        ...userData,
+        bio: '',
+        avatar: 'https://images.pexels.com/photos/1323712/pexels-photo-1323712.jpeg?cs=srgb&dl=pexels-aleksandar-pasaric-1323712.jpg&fm=jpg' // default avatar picture
+      }
       delete userDataCopy.password
       userDataCopy.timestamp = serverTimestamp()
       await setDoc(doc(db, 'users', user.uid), userDataCopy)

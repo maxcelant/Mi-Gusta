@@ -98,7 +98,7 @@ function Recipe() {
     <div className='mb-16'>
       <div className='container mx-auto flex justify-start items-center mb-3'>
       {currentUser ?
-        (<Link to={(auth.currentUser.uid === params.userId) ? '/profile' : `/account/${params.userId}`}>
+        (<Link to={`/account/${params.userId}`}>
           <div class="avatar">
             <div  class="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img src={user.avatar} alt={recipe.author}/>

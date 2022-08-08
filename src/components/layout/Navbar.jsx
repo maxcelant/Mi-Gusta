@@ -2,6 +2,7 @@ import { MdFoodBank } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { FaHome, FaSignInAlt } from 'react-icons/fa'
 import { MdAccountCircle } from 'react-icons/md'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { BsSearch } from 'react-icons/bs'
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom'
@@ -27,7 +28,10 @@ function Navbar() {
         <button onClick={() => navigate('/search')}>
           <BsSearch className='text-4xl'/>
         </button>
-        <button onClick={() => navigate('/profile')}>
+        <button onClick={() => navigate('/create-recipe')}>
+          <AiOutlinePlusCircle className='text-4xl'/>
+        </button>
+        <button  onClick={() => navigate('/profile')}>
           <MdAccountCircle className='text-4xl'/>
         </button>
       </div>

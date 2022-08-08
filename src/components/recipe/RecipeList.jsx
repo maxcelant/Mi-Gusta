@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { collection, getDocs, query, orderBy, limit, startAfter } from 'firebase/firestore';
 import { db } from '../../firebase.config';
@@ -12,41 +12,47 @@ function RecipeList() {
 
     const [ recipes, setRecipes] = useState(null);
     const [ loading, setLoading ] = useState(true);
+    const isMounted = useRef(true)
     const params = useParams();
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                // get reference to collection
-                const recipesRef = collection(db, 'recipes')
-
-                // create a query
-                const q = query(
-                    recipesRef,
-                    orderBy('timestamp', 'desc'),
-                    limit(20),
-                )
-
-                // execute query
-                const querySnap = await getDocs(q)
-
-                const recipes = []
-
-                querySnap.forEach((doc) => {
-                    return recipes.push({
-                        id: doc.id,
-                        data: doc.data(),
+        if(isMounted){
+            const fetchRecipes = async () => {
+                try {
+                    // get reference to collection
+                    const recipesRef = collection(db, 'recipes')
+    
+                    // create a query
+                    const q = query(
+                        recipesRef,
+                        orderBy('timestamp', 'desc'),
+                        limit(20),
+                    )
+    
+                    // execute query
+                    const querySnap = await getDocs(q)
+    
+                    const recipes = []
+    
+                    querySnap.forEach((doc) => {
+                        return recipes.push({
+                            id: doc.id,
+                            data: doc.data(),
+                        })
                     })
-                })
-                setRecipes(recipes)
-                setLoading(false)
-            } catch (e) {
-                console.log(e)
-                toast.error('Could not fetch recipes')
+                    setRecipes(recipes)
+                    setLoading(false)
+                } catch (e) {
+                    console.log(e)
+                    toast.error('Could not fetch recipes')
+                }
             }
+            fetchRecipes()
         }
-        fetchRecipes()
-    }, []);
+        return () => {
+            isMounted.current = false
+        }
+    }, [isMounted]);
 
     if(loading){
         return  <div class="flex justify-center items-center h-screen">

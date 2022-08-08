@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom'
-import { updateDoc, doc, getDoc } from 'firebase/firestore';
+import { updateDoc, doc, getDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { db } from '../firebase.config'
 import { MoonLoader } from 'react-spinners'
-import { toast } from 'react-toastify' 
+import { toast } from 'react-toastify'
+import { v4 as uuidv4 } from 'uuid' 
 
 function Profile() {
 
   const auth = getAuth()
   const navigate = useNavigate()
 
+  const [ percent, setPercent ] = useState(0)
   const [ loading, setLoading ] = useState(true)
   const [ userData, setUserData ] = useState(null)
   const [ changeDetails, setChangeDetails ] = useState(false)
@@ -34,6 +37,58 @@ function Profile() {
 
   const onChange = (e) => {
     setUserData({...userData, [e.target.id]: e.target.value})
+  }
+
+  const onChangeAvatar = (e) => {
+    setUserData({
+      ...userData,
+      file: e.target.files
+    })
+  }
+
+  const onSubmitAvatar = async (e) => {
+    e.preventDefault()
+
+    if(!userData.file){
+      toast.error('File not uploaded')
+      return
+    }
+
+    const storage = getStorage()
+    const fileName = `${auth.currentUser.uid}-${userData.file.name}-${uuidv4()}`
+    const storageRef = ref(storage, `images/` + fileName)
+    const uploadTask = uploadBytesResumable(storageRef, userData.file)
+
+    let fileUrl = '';
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+          const percent = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+          // download url
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+              fileUrl = url;
+          });
+      }
+    ); 
+
+    console.log(fileUrl)
+
+    const userDataCopy = {
+      ...userData,
+      avatar: fileUrl
+    }
+    delete userDataCopy.file
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    await updateDoc(userRef, userDataCopy)
+    setLoading(false)
+    toast.success('Successfully updated avatar!')
   }
 
   const onSubmit = async (e) => {
@@ -76,10 +131,22 @@ function Profile() {
         </div>
         <div className='text-5xl font-jost font-bold mb-6'>My Profile</div>
         <div className='container mx-auto flex justify-start items-center mb-3'>
-        <div class="avatar">
-            <div  class="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-lg">
-            <img src={userData.avatar} alt={userData.name}/>
+        <div className="avatar relative">
+            <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-lg">
+              <img src={userData.avatar} alt={userData.name}/>
             </div>
+        </div>
+        <label for="my-modal" class="absolute btn btn-lg modal-button bg-transparent text-transparent border-0 hover:bg-transparent rounded-full">ope</label>
+        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Update Profile Avatar</h3>
+            <input className="formInputFile" type='file' id='images' onChange={onChangeAvatar} max='1' accept='.jpg,.png,.jpeg' required/>
+            <div className="modal-action">
+              <label for="my-modal" onClick={onSubmitAvatar} className="btn btn-sm">Update</label>
+              <label for="my-modal" className="btn btn-sm btn-secondary">Cancel</label>
+            </div>
+          </div>
         </div>
         <div className='flex justify-start font-bold text-md ml-3'>
           {userData.name}

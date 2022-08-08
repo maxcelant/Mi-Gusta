@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Navigate, Link } from 'react-router-dom'
 import { getDoc, doc, collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
-import { db } from '../firebase.config'
+import { db, } from '../firebase.config'
 import { MoonLoader } from 'react-spinners'
 import { toast } from 'react-toastify' 
 
@@ -85,13 +85,13 @@ function Account() {
         <div className='border-t border-gray-300 my-4'/>
         <div className='font-jost text-2xl font-semibold mb-2'>Posts</div>
         <div className='container mx-auto'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1'>
+            <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {recipes.map((recipe) => (
                     <Link to={`/recipe/${params.userId}/${recipe.id}`}>
                         <div class="max-w-sm rounded overflow-hidden shadow-lg ">
                         <img class="w-full max-h-48 md:max-h-72 lg:max-h-72 object-cover" src={recipe.data.imageUrls[0]} alt={recipe.data.name}/>
                         <div class="px-4 py-2">
-                            <div class="font-bold text-sm font-poppins">{recipe.data.name}</div>
+                            <div class="font-bold text-md font-poppins">{recipe.data.name}</div>
                             <div class="font-medium text-sm font-poppins">{recipe.data.teaser}</div>
                         </div>
                         </div>
