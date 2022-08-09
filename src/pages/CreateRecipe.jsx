@@ -176,26 +176,26 @@ function CreateRecipe() {
         <div className='container mx-auto bg-white rounded-md max-w-xl shadow-md p-3'>
             <form>
                 <div className='font-jost mt-4 font-semibold text-lg'>Recipe Title</div>
-                <input type="text" id='name' value={recipeData.name} onChange={onChange} maxLength='50' minLength='4' required placeholder="tikka masala" className="input w-full" autocomplete="off"/>
+                <input type="text" id='name' value={recipeData.name} onChange={onChange} maxLength='50' minLength='4' required placeholder="tikka masala" className="input w-full" autoComplete="off"/>
                 <div className='font-jost mt-4 font-semibold text-lg'>Subtitle</div>
-                <input type="text" id='teaser' value={recipeData.teaser} onChange={onChange} maxLength='150' minLength='4' required placeholder="delicious indian recipe..." className="input w-full" autocomplete="off"/>
+                <input type="text" id='teaser' value={recipeData.teaser} onChange={onChange} maxLength='150' minLength='4' required placeholder="delicious indian recipe..." className="input w-full" autoComplete="off"/>
                 <div className='font-jost mt-4 font-semibold text-lg'>Description</div>
-                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='1500' minLength='30' required placeholder="This rich and creamy tikka rivals any indian restaurant..." className="input w-full min-h-64" autocomplete="off"/>
+                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='1500' minLength='30' required placeholder="This rich and creamy tikka rivals any indian restaurant..." className="input w-full min-h-64" autoComplete="off"/>
                 <div className='grid grid-cols-2 gap-4'>
                   <div className='container'>
                     <div className='font-jost mt-4 font-semibold text-lg text-center'>Prep Time</div>
-                    <input type="text" id='prep_time' value={recipeData.prep_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="5 minutes" className="input w-full" autocomplete="off"/>
+                    <input type="text" id='prep_time' value={recipeData.prep_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="5 minutes" className="input w-full" autoComplete="off"/>
                   </div>
                   <div className='container'>
                     <div className='font-jost mt-4 font-semibold text-lg text-center'>Cook Time</div>
-                    <input type="text" id='cook_time' value={recipeData.cook_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="25 minutes" className="input w-full" autocomplete="off"/>
+                    <input type="text" id='cook_time' value={recipeData.cook_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="25 minutes" className="input w-full" autoComplete="off"/>
                   </div>
                 </div>
                 <div className='font-jost mt-4 font-semibold text-lg mr-4'>Step-by-Step Instructions</div>
                 <div className='mt-1'><button onClick={handleDirectionAdd} className='btn btn-sm btn-success rounded-lg mr-2 btn-outline border-4'>Add Step</button></div>
                 { directionList.map((direction, index) => (
                     <span key={index} className='relative'>
-                        <textarea type="text" id='ingredient' value={direction} onChange={(e) => handleDirectionChange(e, index)} maxLength='500' minLength='3' required placeholder={`Step ${index+1}`} className="input w-full min-h-64 mt-3" autocomplete="off"/>
+                        <textarea type="text" id='ingredient' value={direction} onChange={(e) => handleDirectionChange(e, index)} maxLength='500' minLength='3' required placeholder={`Step ${index+1}`} className="input w-full min-h-64 mt-3" autoComplete="off"/>
                         {directionList.length > 1 && <button onClick={(e) => handleDirectionRemove(e, index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 bottom-2 right-2'>Remove</button>}
                     </span>
                 ))
@@ -204,7 +204,7 @@ function CreateRecipe() {
                 <div className='mt-1'><button onClick={handleIngredientAdd} className='btn btn-sm btn-success rounded-lg mr-2 btn-outline border-4'>Add Ingredient</button></div>
                 { ingredientList.map((ingredient, index) => (
                     <span key={index} className='relative'>
-                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='80' minLength='3' required placeholder="1 teaspoon of turmeric" className="input w-full min-h-64 mt-3" autocomplete="off"/>
+                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='80' minLength='3' required placeholder="1 teaspoon of turmeric" className="input w-full min-h-64 mt-3" autoComplete="off"/>
                         {ingredientList.length > 1 && <button onClick={(e) => handleIngredientRemove(e, index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 -bottom-1 right-2'>Remove</button>}
                     </span>
                 ))

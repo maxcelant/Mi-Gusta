@@ -88,11 +88,11 @@ function Account() {
             <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {recipes.map((recipe) => (
                     <Link to={`/recipe/${params.userId}/${recipe.id}`}>
-                        <div class="max-w-sm rounded overflow-hidden shadow-lg ">
-                        <img class="w-full max-h-48 md:max-h-72 lg:max-h-72 object-cover" src={recipe.data.imageUrls[0]} alt={recipe.data.name}/>
-                        <div class="px-4 py-2">
-                            <div class="font-bold text-md font-poppins">{recipe.data.name}</div>
-                            <div class="font-medium text-sm font-poppins">{recipe.data.teaser}</div>
+                        <div className="max-w-sm rounded overflow-hidden shadow-lg ">
+                        <img className="w-full max-h-48 md:max-h-72 lg:max-h-72 object-cover" src={recipe.data.imageUrls[0]} alt={recipe.data.name}/>
+                        <div className="px-4 py-2">
+                            <div className="font-bold text-md font-poppins">{recipe.data.name}</div>
+                            <div className="font-medium text-sm font-poppins">{recipe.data.teaser}</div>
                         </div>
                         </div>
                     </Link>

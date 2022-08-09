@@ -49,7 +49,7 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
                         <div  class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-lg">
                             <img src={user.avatar} alt={user.name}/>
                         </div>
-                        <span className='flex items-center ml-2 badge badge-secondary mt-3 font-semibold'>{user.name}</span>
+                        <span className='flex items-center ml-2 badge mt-3 font-semibold'>{user.name}</span>
                     </div>
                     <figure className="object-cover"><img className="w-full object-cover max-h-72" src={imageUrls[0]} alt={name} /></figure>
                     <div class="card-body">
