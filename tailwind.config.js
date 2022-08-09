@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       fontFamily:{
         'jost': ['Jost'],
-        'poppins':['Poppins']
+        'poppins':['Poppins'],
+        'mukta':['Mukta']
       },
     },
   },

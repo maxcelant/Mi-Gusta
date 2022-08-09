@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigate, Link } from 'react-router-dom'
 import { updateDoc, doc, getDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
@@ -11,32 +11,36 @@ import { v4 as uuidv4 } from 'uuid'
 function Profile() {
 
   const auth = getAuth()
-  const storage = getStorage()
   const navigate = useNavigate()
+  const isMounted = useRef(true)
 
   const [ percent, setPercent ] = useState(0)
-  const [ file, setFile ] = useState("")
-  const [ fileURL, setFileURL ] = useState("")
+  const [ file, setFile ] = useState(null)
   const [ loading, setLoading ] = useState(true)
   const [ userData, setUserData ] = useState(null)
   const [ changeDetails, setChangeDetails ] = useState(false)
 
   useEffect(() => {
-    const fetchUser = async () => {
-        try {
-          const docRef = doc(db, 'users', auth.currentUser.uid)
-          const docSnap = await getDoc(docRef)
-          if(docSnap.exists()){
-            setUserData(docSnap.data())
-            setLoading(false)
+    if(isMounted){
+      const fetchUser = async () => {
+          try {
+            const docRef = doc(db, 'users', auth.currentUser.uid)
+            const docSnap = await getDoc(docRef)
+            if(docSnap.exists()){
+              setUserData(docSnap.data())
+              setLoading(false)
+            }
+          } catch (e) {
+            toast.error('Could not fetch profile. Check internet connection.')
           }
-        } catch (e) {
-          toast.error('Could not fetch profile. Check internet connection.')
         }
-      }
-      
-      fetchUser()
-  }, [])
+        
+        fetchUser()
+    }
+    return () => {
+      isMounted.current = false
+  }
+  }, [isMounted])
 
   const onChange = (e) => {
     setUserData({...userData, [e.target.id]: e.target.value})
@@ -53,34 +57,42 @@ function Profile() {
       toast.error('File not uploaded')
       return
     }
+    
+    const storeImage = async (file) => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage()
+        const fileName = `${auth.currentUser.uid}-${file.name}-${uuidv4()}`
+        const storageRef = ref(storage, 'image/' + fileName)
+        const uploadTask = uploadBytesResumable(storageRef, file)
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+              const percent = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              );
+              setPercent(percent);
+          },
+          (err) => {
+            reject(err)
+          },
+          () => {
+              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                  resolve(url)
+              });
+            }
+        );
+      })
+    }
 
-    const fileName = `images/${auth.currentUser.uid}-${file.name}-${uuidv4()}`
-    const storageRef = ref(storage, fileName)
-    const uploadTask = uploadBytesResumable(storageRef, file)
+    let fileURL = await storeImage(file)
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-          const percent = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setPercent(percent);
-      },
-      (err) => {
-        console.log(err)
-      },
-      () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              setFileURL(url)
-          });
-        }
-    );
-
-    const userRef = doc(db, 'users', auth.currentUser.uid);
-    await updateDoc(userRef, {
+    setUserData({
       ...userData,
       avatar: fileURL
     })
+
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    await updateDoc(userRef, userData)
 
     setLoading(false)
     toast.success('Successfully updated avatar!')
@@ -114,7 +126,7 @@ function Profile() {
   }
 
   if(loading){
-    return  <div class="flex justify-center items-center h-screen">
+    return  <div className="flex justify-center items-center h-screen">
                 <MoonLoader/>
             </div>
   }
@@ -143,11 +155,11 @@ function Profile() {
             </div>
           </div>
         </div>
-        <div className='flex justify-start font-bold text-md ml-3'>
+        <div className='flex justify-start font-bold text-md ml-3 font-jost'>
           {userData.name}
         </div>
         </div>
-        <div className='font-thin text-xl mb-2'>Personal Details</div>
+        <div className='font-thin text-xl mb-2 font-mukta'>Personal Details</div>
         <div className='grid lg:grid-cols-2'>
             <div className='container bg-white rounded-lg min-w-md p-5 shadow-lg'>
                 <div className='flex justify-end'>

@@ -85,11 +85,11 @@ function Search() {
             <button className='absolute btn btn-md rounded-full -right-1 btn-ghost hover:bg-transparent' onClick={onSubmit}><AiOutlineSearch className='text-3xl'/></button>
         </form>
       </div>
-      <div className='mt-4 mb-10'>
+      <div className='grid gap-4 grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-4 mb-10'>
         { searchOutput ? searchOutput.map(({item}, index) => (
           <div key={index} className='flex justify-center'>
-          <Link to={`/recipe/${item.userRef}/${item.id}`}>
-              <div className="max-w-sm rounded overflow-hidden shadow-lg mb-4">
+          <Link to={`/recipe/${item.data.userRef}/${item.id}`}>
+              <div className="max-w-sm rounded overflow-hidden shadow-lg mb-4 relative">
               <img className="w-full max-h-48 md:max-h-72 lg:max-h-72 object-cover" src={item.data.imageUrls[0]} alt={item.data.name}/>
               <div className="px-4 py-2">
                   <div className='absolute top-3 left-3 badge badge-primary font-jost bg-opacity-70'>{item.data.author}</div>
@@ -114,7 +114,7 @@ function Search() {
           </div>
       ))
         }
-      </div>
+        </div>
     </div>
   )
 }

@@ -136,21 +136,30 @@ function Recipe() {
       <div className='pt-4'>
         <div class="stats shadow-md bg-white w-full md:w-auto lg:w-auto xl:w-auto">
         <div class="stat place-items-center inline">
-          <div className='inline'><AiFillClockCircle className='inline mr-2 text-2xl'/></div><div class="inline stat-title">Prep Time</div>
-          <div class="stat-value text-xl">{recipe.prep_time}</div>
+          <div className='inline'><AiFillClockCircle className='inline mr-2 text-2xl'/></div><div class="inline stat-title font-mukta">Prep Time</div>
+          <div class="stat-value text-xl font-mukta">{recipe.prep_time}</div>
         </div>
         <div class="stat place-items-center inline">
-        <div className='inline'><GiCookingPot className='inline mr-2 text-2xl'/></div><div class="inline stat-title">Cook Time</div>
-          <div class="stat-value text-xl">{recipe.cook_time}</div>
+        <div className='inline'><GiCookingPot className='inline mr-2 text-2xl font-mukta'/></div><div class="inline stat-title font-mukta">Cook Time</div>
+          <div class="stat-value text-xl font-mukta">{recipe.cook_time}</div>
         </div>
       </div>
       </div>
-      <div className='text-2xl font-semibold mt-4'>Description</div>
-      <div className='container mx-auto bg-white p-4 rounded-md'>
+      <div className='border-t border-gray-300 my-4'/>
+      <div className='text-2xl font-semibold mt-4 font-mukta'>Description</div>
+      <div className='container mx-auto bg-white p-4 rounded-md shadow-md'>
         <p className='mt-1 font-poppins'>{recipe.description}</p>
       </div>
-      <div className='text-2xl font-semibold mt-4'>Directions</div>
-      <div className='container mx-auto bg-white rounded-md p-4'>
+      <div className='border-t border-gray-300 my-4'/>
+      <div className='text-2xl font-semibold mt-4 font-mukta'>Ingredients</div>
+      {recipe.ingredients.map((ingredient, index) => (
+          <li key={index} className='text-sm md:text-md lg:text-lg xl:text-lg font-semibold m-2'>
+            <span  className='bg-white p-0.5 px-2 rounded-lg font-poppins opacity-70 shadow-md'>{ingredient}</span>
+          </li>
+      ))}
+      <div className='border-t border-gray-300 my-4'/>
+      <div className='text-2xl font-semibold mt-4 font-mukta'>Directions</div>
+      <div className='container mx-auto bg-white rounded-md p-4 shadow-md'>
         {recipe.directions.map((step, index) => (
           <Fragment>
           <div className='text-2xl font-semibold font-jost'>Step {index + 1}</div>
@@ -162,12 +171,7 @@ function Recipe() {
         }
       </div>
       <hr/>
-      <div className='text-2xl font-semibold mt-4'>Ingredients</div>
-      {recipe.ingredients.map((ingredient, index) => (
-          <li key={index} className='text-sm md:text-md lg:text-lg xl:text-lg m-2'>
-            <span  className='bg-white p-0.5 px-2 rounded-lg font-poppins'>{ingredient}</span>
-          </li>
-      ))}
+      
     </div>
   )
 

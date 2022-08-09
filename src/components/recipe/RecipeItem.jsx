@@ -42,7 +42,6 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
     }
     
     return (
-        <AnimationWrapper>
             <Link to={`/recipe/${userRef}/${id}`}> {/* sends user to individual recipe page */}
                 <div className="card bg-base-100 shadow-xl relative">
                     <div class="avatar absolute left-4 top-4">
@@ -66,7 +65,6 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
                     </div>
                 </div>
             </Link>
-        </AnimationWrapper>
         )
     }
 

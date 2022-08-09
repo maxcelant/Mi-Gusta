@@ -12,6 +12,11 @@
     src: url("../public/fonts/Poppins-Regular.ttf");
 }
 
+@font-face {
+    font-family: "Mukta";
+    src: url("../public/fonts/Mukta-Regular.ttf");
+}
+
 .formInputFile::-webkit-file-upload-button {
     background-color: #5d5656;
     border: none;
