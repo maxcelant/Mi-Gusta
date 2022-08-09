@@ -2,7 +2,7 @@ import RecipeList from "../components/recipe/RecipeList"
 
 function Home() {
   return (
-    <div>
+    <div className="mb-10">
         <RecipeList/>
     </div>
   )

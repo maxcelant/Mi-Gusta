@@ -15,12 +15,15 @@ const initialState = {
     tags: '',
     votes: 0,
     images: {},
+    prep_time: '',
+    cook_time: '',
 }
 
 function CreateRecipe() {
 
   const [loading, setLoading] = useState(false)
   const [ingredientList, setIngredientList] = useState([''])
+  const [directionList, setDirectionList] = useState([''])
   const [recipeData, setRecipeData] = useState(initialState)
   const auth = getAuth()
   const navigate = useNavigate()
@@ -57,6 +60,24 @@ function CreateRecipe() {
     const list = [...ingredientList]
     list[index] = e.target.value
     setIngredientList(list)
+  }
+
+  const handleDirectionAdd = (e) => {
+    e.preventDefault()
+    setDirectionList([...directionList, ''])
+  }
+
+  const handleDirectionRemove = (e, index) => {
+    e.preventDefault()
+    const list = [...directionList]
+    list.splice(index, 1)
+    setDirectionList(list)
+  }
+
+  const handleDirectionChange = (e, index) => {
+    const list = [...directionList]
+    list[index] = e.target.value
+    setDirectionList(list)
   }
   
   const onChange = (e) => {
@@ -127,11 +148,13 @@ function CreateRecipe() {
     })
 
     const ingredientListCopy = [...ingredientList]
+    const directionListCopy = [...directionList]
 
     const recipeDataCopy = {
         ...recipeData,
         imageUrls,
         ingredients: ingredientListCopy,
+        directions: directionListCopy,
         timestamp: serverTimestamp()
     }
     delete recipeDataCopy.images
@@ -157,12 +180,31 @@ function CreateRecipe() {
                 <div className='font-jost mt-4 font-semibold text-lg'>Subtitle</div>
                 <input type="text" id='teaser' value={recipeData.teaser} onChange={onChange} maxLength='150' minLength='4' required placeholder="delicious indian recipe..." className="input w-full" autocomplete="off"/>
                 <div className='font-jost mt-4 font-semibold text-lg'>Description</div>
-                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='1500' minLength='30' required placeholder="Step 1: Create the tomato sauce..." className="input w-full min-h-64" autocomplete="off"/>
+                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='1500' minLength='30' required placeholder="This rich and creamy tikka rivals any indian restaurant..." className="input w-full min-h-64" autocomplete="off"/>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className='container'>
+                    <div className='font-jost mt-4 font-semibold text-lg text-center'>Prep Time</div>
+                    <input type="text" id='prep_time' value={recipeData.prep_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="5 minutes" className="input w-full" autocomplete="off"/>
+                  </div>
+                  <div className='container'>
+                    <div className='font-jost mt-4 font-semibold text-lg text-center'>Cook Time</div>
+                    <input type="text" id='cook_time' value={recipeData.cook_time} onChange={onChange} maxLength='30' minLength='1' required placeholder="25 minutes" className="input w-full" autocomplete="off"/>
+                  </div>
+                </div>
+                <div className='font-jost mt-4 font-semibold text-lg mr-4'>Step-by-Step Instructions</div>
+                <div className='mt-1'><button onClick={handleDirectionAdd} className='btn btn-sm btn-success rounded-lg mr-2 btn-outline border-4'>Add Step</button></div>
+                { directionList.map((direction, index) => (
+                    <span key={index} className='relative'>
+                        <textarea type="text" id='ingredient' value={direction} onChange={(e) => handleDirectionChange(e, index)} maxLength='500' minLength='3' required placeholder={`Step ${index+1}`} className="input w-full min-h-64 mt-3" autocomplete="off"/>
+                        {directionList.length > 1 && <button onClick={(e) => handleDirectionRemove(e, index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 bottom-2 right-2'>Remove</button>}
+                    </span>
+                ))
+                }
                 <div className='font-jost mt-4 font-semibold text-lg mr-4'>Ingredients</div>
                 <div className='mt-1'><button onClick={handleIngredientAdd} className='btn btn-sm btn-success rounded-lg mr-2 btn-outline border-4'>Add Ingredient</button></div>
                 { ingredientList.map((ingredient, index) => (
                     <span key={index} className='relative'>
-                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='60' minLength='3' required placeholder="1 tablespoon of turmeric" className="input w-full min-h-64 mt-3" autocomplete="off"/>
+                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='80' minLength='3' required placeholder="1 teaspoon of turmeric" className="input w-full min-h-64 mt-3" autocomplete="off"/>
                         {ingredientList.length > 1 && <button onClick={(e) => handleIngredientRemove(e, index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 -bottom-1 right-2'>Remove</button>}
                     </span>
                 ))

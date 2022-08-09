@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react'
 import { getAuth, updateProfile } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { updateDoc, doc, getDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { db } from '../firebase.config'
@@ -171,6 +171,9 @@ function Profile() {
                 </form>
             </div>
         </div>
+        <Link to={`/account/${auth.currentUser.uid}`}>
+          <button className='btn btn-md btn-primary rounded-full mt-3'>Check out my Page</button>
+        </Link>
     </div>
   )
 }
