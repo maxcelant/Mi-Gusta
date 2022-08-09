@@ -5,6 +5,8 @@ import { getAuth } from 'firebase/auth'
 import { db } from '../firebase.config'
 import { MoonLoader } from 'react-spinners'
 import {toast} from 'react-toastify'
+import { AiFillClockCircle } from 'react-icons/ai'
+import { GiCookingPot } from 'react-icons/gi'
 
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -39,7 +41,6 @@ function Recipe() {
         const docRef = doc(db, 'recipes', params.recipeId)
         const docSnap = await getDoc(docRef)
         if(docSnap.exists()){
-          console.log(docSnap.data())
           setRecipe(docSnap.data())
         }
       } catch (e) {
@@ -132,17 +133,39 @@ function Recipe() {
           </SwiperSlide>
         ))}
       </Swiper>
-
+      <div className='pt-4'>
+        <div class="stats shadow-md bg-white w-full md:w-auto lg:w-auto xl:w-auto">
+        <div class="stat place-items-center inline">
+          <div className='inline'><AiFillClockCircle className='inline mr-2 text-2xl'/></div><div class="inline stat-title">Prep Time</div>
+          <div class="stat-value text-xl">{recipe.prep_time}</div>
+        </div>
+        <div class="stat place-items-center inline">
+        <div className='inline'><GiCookingPot className='inline mr-2 text-2xl'/></div><div class="inline stat-title">Cook Time</div>
+          <div class="stat-value text-xl">{recipe.cook_time}</div>
+        </div>
+      </div>
+      </div>
       <div className='text-2xl font-semibold mt-4'>Description</div>
       <div className='container mx-auto bg-white p-4 rounded-md'>
-        <p className='mt-1'>{recipe.description}</p>
+        <p className='mt-1 font-poppins'>{recipe.description}</p>
       </div>
+      <div className='text-2xl font-semibold mt-4'>Directions</div>
+      <div className='container mx-auto bg-white rounded-md p-4'>
+        {recipe.directions.map((step, index) => (
+          <Fragment>
+          <div className='text-2xl font-semibold font-jost'>Step {index + 1}</div>
+            <div className='font-poppins mb-3'>{step}</div>
+            {index !== recipe.directions.length - 1 && <div className='border-t border-gray-300 my-4'/>}
+          </Fragment>
+        ))
 
+        }
+      </div>
       <hr/>
       <div className='text-2xl font-semibold mt-4'>Ingredients</div>
       {recipe.ingredients.map((ingredient, index) => (
-          <li key={index} className='text-sm md:text-md lg:text-lg xl:text-lg font-semibold m-2'>
-            <span  className='bg-white p-0.5 px-2 rounded-lg'>{ingredient}</span>
+          <li key={index} className='text-sm md:text-md lg:text-lg xl:text-lg m-2'>
+            <span  className='bg-white p-0.5 px-2 rounded-lg font-poppins'>{ingredient}</span>
           </li>
       ))}
     </div>

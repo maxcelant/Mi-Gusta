@@ -13,7 +13,7 @@ function RecipeItem({recipe: { name, teaser,  author, votes, imageUrls, tags, us
                     <div class="card-body">
                     <h2 class="card-title">{name}</h2>
                     <div className='badge'>{author}</div>
-                    <p className='overflow-hidden'>{teaser}</p>
+                    <p className='overflow-hidden max-h-24'>{teaser}</p>
                     { tags !== null || tags.length !== 0 && (
                         <div className="card-actions justify-end">
                             { tags.map((tag, index) => (

@@ -41,11 +41,13 @@ function CreateRecipe() {
     }
   }, [isMounted])
 
-  const handleIngredientAdd = () => {
+  const handleIngredientAdd = (e) => {
+    e.preventDefault()
     setIngredientList([...ingredientList, ''])
   }
 
-  const handleIngredientRemove = (index) => {
+  const handleIngredientRemove = (e, index) => {
+    e.preventDefault()
     const list = [...ingredientList]
     list.splice(index, 1)
     setIngredientList(list)
@@ -147,21 +149,21 @@ function CreateRecipe() {
 
   return (
     <div className='container mx-auto max-w-xl'>
-        <div className='text-4xl font-jost font-bold mt-8 mb-4'>Create a Recipe</div>
+        <div className='text-5xl font-jost font-bold mt-4 mb-4'>Create a Recipe</div>
         <div className='container mx-auto bg-white rounded-md max-w-xl shadow-md p-3'>
             <form>
-                <div className='font-jost mt-4 font-semibold text-lg'>Recipe Name</div>
-                <input type="text" id='name' value={recipeData.name} onChange={onChange} maxLength='32' minLength='4' required placeholder="tikka masala" className="input w-full" />
-                <div className='font-jost mt-4 font-semibold text-lg'>Teaser</div>
-                <input type="text" id='teaser' value={recipeData.teaser} onChange={onChange} maxLength='100' minLength='4' required placeholder="delicious indian recipe..." className="input w-full" />
+                <div className='font-jost mt-4 font-semibold text-lg'>Recipe Title</div>
+                <input type="text" id='name' value={recipeData.name} onChange={onChange} maxLength='50' minLength='4' required placeholder="tikka masala" className="input w-full" autocomplete="off"/>
+                <div className='font-jost mt-4 font-semibold text-lg'>Subtitle</div>
+                <input type="text" id='teaser' value={recipeData.teaser} onChange={onChange} maxLength='150' minLength='4' required placeholder="delicious indian recipe..." className="input w-full" autocomplete="off"/>
                 <div className='font-jost mt-4 font-semibold text-lg'>Description</div>
-                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='600' minLength='30' required placeholder="Step 1: Create the tomato sauce..." className="input w-full min-h-64" />
+                <textarea type="text" id='description' value={recipeData.description} onChange={onChange} maxLength='1500' minLength='30' required placeholder="Step 1: Create the tomato sauce..." className="input w-full min-h-64" autocomplete="off"/>
                 <div className='font-jost mt-4 font-semibold text-lg mr-4'>Ingredients</div>
                 <div className='mt-1'><button onClick={handleIngredientAdd} className='btn btn-sm btn-success rounded-lg mr-2 btn-outline border-4'>Add Ingredient</button></div>
                 { ingredientList.map((ingredient, index) => (
                     <span key={index} className='relative'>
-                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='30' minLength='3' required placeholder="1 tablespoon of turmeric" className="input w-full min-h-64 mt-3" />
-                        {ingredientList.length > 1 && <button onClick={() => handleIngredientRemove(index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 -bottom-1 right-2'>Remove</button>}
+                        <input type="text" id='ingredient' value={ingredient} onChange={(e) => handleIngredientChange(e, index)} maxLength='60' minLength='3' required placeholder="1 tablespoon of turmeric" className="input w-full min-h-64 mt-3" autocomplete="off"/>
+                        {ingredientList.length > 1 && <button onClick={(e) => handleIngredientRemove(e, index)} className='absolute btn btn-sm btn-error rounded-lg btn-outline border-4 -bottom-1 right-2'>Remove</button>}
                     </span>
                 ))
                 }

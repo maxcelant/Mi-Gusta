@@ -11,9 +11,12 @@ import { v4 as uuidv4 } from 'uuid'
 function Profile() {
 
   const auth = getAuth()
+  const storage = getStorage()
   const navigate = useNavigate()
 
   const [ percent, setPercent ] = useState(0)
+  const [ file, setFile ] = useState("")
+  const [ fileURL, setFileURL ] = useState("")
   const [ loading, setLoading ] = useState(true)
   const [ userData, setUserData ] = useState(null)
   const [ changeDetails, setChangeDetails ] = useState(false)
@@ -28,7 +31,7 @@ function Profile() {
             setLoading(false)
           }
         } catch (e) {
-          toast.error('Could not fetch data')
+          toast.error('Could not fetch profile. Check internet connection.')
         }
       }
       
@@ -40,26 +43,20 @@ function Profile() {
   }
 
   const onChangeAvatar = (e) => {
-    setUserData({
-      ...userData,
-      file: e.target.files
-    })
+    setFile(e.target.files[0])
   }
 
   const onSubmitAvatar = async (e) => {
     e.preventDefault()
 
-    if(!userData.file){
+    if(!file){
       toast.error('File not uploaded')
       return
     }
 
-    const storage = getStorage()
-    const fileName = `${auth.currentUser.uid}-${userData.file.name}-${uuidv4()}`
-    const storageRef = ref(storage, `images/` + fileName)
-    const uploadTask = uploadBytesResumable(storageRef, userData.file)
-
-    let fileUrl = '';
+    const fileName = `images/${auth.currentUser.uid}-${file.name}-${uuidv4()}`
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
       "state_changed",
@@ -69,24 +66,22 @@ function Profile() {
           );
           setPercent(percent);
       },
-      (err) => console.log(err),
+      (err) => {
+        console.log(err)
+      },
       () => {
-          // download url
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              fileUrl = url;
+              setFileURL(url)
           });
-      }
-    ); 
+        }
+    );
 
-    console.log(fileUrl)
-
-    const userDataCopy = {
-      ...userData,
-      avatar: fileUrl
-    }
-    delete userDataCopy.file
     const userRef = doc(db, 'users', auth.currentUser.uid);
-    await updateDoc(userRef, userDataCopy)
+    await updateDoc(userRef, {
+      ...userData,
+      avatar: fileURL
+    })
+
     setLoading(false)
     toast.success('Successfully updated avatar!')
   }
@@ -136,15 +131,15 @@ function Profile() {
               <img src={userData.avatar} alt={userData.name}/>
             </div>
         </div>
-        <label for="my-modal" class="absolute btn btn-lg modal-button bg-transparent text-transparent border-0 hover:bg-transparent rounded-full">ope</label>
+        <label htmlFor="my-modal" class="absolute btn btn-lg modal-button bg-transparent text-transparent border-0 hover:bg-transparent rounded-full">ope</label>
         <input type="checkbox" id="my-modal" className="modal-toggle" />
         <div className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Update Profile Avatar</h3>
             <input className="formInputFile" type='file' id='images' onChange={onChangeAvatar} max='1' accept='.jpg,.png,.jpeg' required/>
             <div className="modal-action">
-              <label for="my-modal" onClick={onSubmitAvatar} className="btn btn-sm">Update</label>
-              <label for="my-modal" className="btn btn-sm btn-secondary">Cancel</label>
+              <label htmlFor="my-modal" onClick={onSubmitAvatar} className="btn btn-sm">Update</label>
+              <label htmlFor="my-modal" className="btn btn-sm btn-secondary">Cancel</label>
             </div>
           </div>
         </div>
